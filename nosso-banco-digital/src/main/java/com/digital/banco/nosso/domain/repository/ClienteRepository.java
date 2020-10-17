@@ -23,10 +23,13 @@ public interface ClienteRepository extends CustomJpaRepository<Cliente, Long>, J
 	@Query("from Cliente c where c.cpf = :cpf")
 	Cliente procurePorCpf(@Param("cpf") String cpf);
 
-	Optional<Cliente> findByCpf(String codigo);
+	@Query("from Cliente c "
+			+ "where c.cpf = :cpfCliente")
+	Optional<Cliente> findByCpf(String cpfCliente);
 	
 	@Query("select f from FotoCliente f "
 			+ "join f.cli c "
 			+ "where c.codigo = :codigoCliente")
 	Optional<FotoCliente> findFotoById(String codigoCliente);
+	
 }

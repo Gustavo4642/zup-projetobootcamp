@@ -23,27 +23,22 @@ public class CadastroFotoClienteService {
 	
 	@Transactional
 	public FotoCliente salvar(FotoCliente foto, InputStream dadosArquivo) {
-		
 		String codigoCliente = foto.getCliId();
 		String nomeNovoArquivo = fotoStorage.gerarNomeArquivo(foto.getNomeArquivo());
 		String nomeArquivoExistente = null;
-		
 		// antes de salvar a foto do produto, verifica se existe, exclui se existir e inclui outra.
 		Optional<FotoCliente> fotoExistente = clienteRepository.findFotoById(codigoCliente);
 		if(fotoExistente.isPresent()) {
 			nomeArquivoExistente = fotoExistente.get().getNomeArquivo();
 			clienteRepository.delete(fotoExistente.get());
 		}
-		
 		// aplicando novo nome no arquivo
 		foto.setNomeArquivo(nomeNovoArquivo);
-		
 		// Passo 1 salvo a foto no repositorio
 		foto = clienteRepository.save(foto);
 		// descarregar a fila para não dar problema no armazenamento da foto
 		clienteRepository.flush(); 
-		
-		// Passo 2 salvo a foto no storage
+		// Passo 2 salvo a foto no storage/local
 		NovaFoto novaFoto = NovaFoto.builder()
 				.nomeArquivo(foto.getNomeArquivo())
 				.contentType(foto.getContentType())
@@ -56,11 +51,9 @@ public class CadastroFotoClienteService {
 		return foto;
 	}
 	
-
 	public FotoCliente buscarOuFalhar(String codigoCliente) {
 	    return clienteRepository.findFotoById(codigoCliente)
 	            .orElseThrow(() -> new FotoClienteNaoEncontradaException(codigoCliente));
 	}      
-
 	
 }

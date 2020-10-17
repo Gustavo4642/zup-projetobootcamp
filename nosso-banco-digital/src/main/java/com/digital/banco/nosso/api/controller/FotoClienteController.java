@@ -33,7 +33,7 @@ import com.digital.banco.nosso.domain.service.FotoStorageService;
 import com.digital.banco.nosso.domain.service.FotoStorageService.FotoRecuperada;;
 
 @RestController
-@RequestMapping("/clientes/{cpfCliente}/foto")
+@RequestMapping("/clientes/{codigoCliente}/foto")
 public class FotoClienteController {
 
 	@Autowired
@@ -70,7 +70,6 @@ public class FotoClienteController {
 			
 			FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());
 			
-			
 			if(fotoRecuperada.temUrl()) {
 				// S3 
 				return ResponseEntity
@@ -105,12 +104,10 @@ public class FotoClienteController {
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public FotoClienteModel atualizarFoto(@PathVariable String cpfCliente,
+	public FotoClienteModel atualizarFoto(@PathVariable String codigoCliente,
 			@Valid FotoClienteInput fotoClienteInput) throws IOException {
 		
-		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);
-		cliente.getCodigo();
-		cliente.getNome();
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(codigoCliente);
 		
 		MultipartFile arquivo = fotoClienteInput.getArquivo();
 		

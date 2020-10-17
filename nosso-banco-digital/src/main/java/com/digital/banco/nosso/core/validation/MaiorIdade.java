@@ -1,6 +1,6 @@
 package com.digital.banco.nosso.core.validation;
 
-import static java.lang.annotation.ElementType.ANNOTATION_TYPE; 
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -13,12 +13,10 @@ import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import javax.validation.constraints.NotNull;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = { MaiorIdadeValidator.class })
-@NotNull
 public @interface MaiorIdade {
 
 	String message() default "{MaiorIdade.rejeicao}";
