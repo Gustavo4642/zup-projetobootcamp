@@ -11,8 +11,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.digital.banco.nosso.core.storage.StorageProperties.TipoStorage;
 import com.digital.banco.nosso.domain.service.FotoStorageService;
-import com.digital.banco.nosso.infrastructure.service.LocalFotoStorageService;
-import com.digital.banco.nosso.infrastructure.service.S3FotoStorageService;
+import com.digital.banco.nosso.infrastructure.service.storage.LocalFotoStorageService;
+import com.digital.banco.nosso.infrastructure.service.storage.S3FotoStorageService;
 
 @Configuration
 public class StorageConfig {

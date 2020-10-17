@@ -1,4 +1,4 @@
-package com.digital.banco.nosso.infrastructure.service;
+package com.digital.banco.nosso.infrastructure.service.storage;
 
 import java.net.URL;
 
