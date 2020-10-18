@@ -30,10 +30,8 @@ public class CadastroClienteService {
 
 	// validacao para pequisa
 	public Cliente buscarOuFalharCpf(String cpfCliente) {
-
 		return clienteRepository.findByCpf(cpfCliente)
 				.orElseThrow(() -> new ClienteNaoEncontradoException(cpfCliente));
-
 	}
 
 	// validação para inclusão.

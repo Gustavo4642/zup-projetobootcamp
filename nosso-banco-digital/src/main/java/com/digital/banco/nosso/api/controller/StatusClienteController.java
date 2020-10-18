@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digital.banco.nosso.domain.exception.NegocioException;
 import com.digital.banco.nosso.domain.model.Cliente;
 import com.digital.banco.nosso.domain.model.FotoCliente;
+import com.digital.banco.nosso.domain.model.Proposta;
 import com.digital.banco.nosso.domain.service.AlteraStatusClienteService;
 import com.digital.banco.nosso.domain.service.CadastroClienteService;
 import com.digital.banco.nosso.domain.service.CadastroFotoClienteService;
+import com.digital.banco.nosso.domain.service.CadastroPropostaService;
 import com.digital.banco.nosso.domain.service.FotoStorageService;
 import com.digital.banco.nosso.domain.service.FotoStorageService.FotoRecuperada;
 
@@ -26,6 +28,9 @@ public class StatusClienteController {
 	
 	@Autowired
 	private CadastroFotoClienteService cadastroFoto;
+	
+	@Autowired
+	private CadastroPropostaService cadastroProposta;
 	
 	@Autowired
 	private AlteraStatusClienteService alteraStatusCliente;
@@ -52,16 +57,32 @@ public class StatusClienteController {
 		} else {
 			throw new NegocioException(String.format("Cliente %s, CPF %s, não possui documento para avaliação", cliente.getNome(), cliente.getCpf()));
 		}		
+	
+		cadastroProposta.salvar(cliente);
 	}
 	
 	@PutMapping("/inativar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable String clienteCpf) {
+		
+		Proposta proposta = cadastroProposta.buscarPropostaParaExclusao(clienteCpf);		
+		
+		if(proposta != null) {
+			cadastroProposta.excluir(proposta.getId());	
+		}
+		
 		alteraStatusCliente.inativarCliente(clienteCpf);
 	}
 	@PutMapping("/recusar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void recusar(@PathVariable String clienteCpf) {
+		
+		Proposta proposta = cadastroProposta.buscarPropostaParaExclusao(clienteCpf);		
+		
+		if(proposta != null) {
+			cadastroProposta.excluir(proposta.getId());	
+		}
+	
 		alteraStatusCliente.recusadoPeloCliente(clienteCpf);
 	}
 	

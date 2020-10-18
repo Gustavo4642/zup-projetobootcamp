@@ -8,6 +8,7 @@ import com.digital.banco.nosso.domain.exception.NegocioException;
 import com.digital.banco.nosso.domain.model.Cliente;
 import com.digital.banco.nosso.domain.model.StatusCliente;
 import com.digital.banco.nosso.domain.repository.ClienteRepository;
+import com.digital.banco.nosso.domain.repository.PropostaRepository;
 import com.digital.banco.nosso.domain.service.mensagemEmail.ConstroiMensagemEmail;
 
 @Service
@@ -15,6 +16,9 @@ public class AlteraStatusClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private PropostaRepository propostaRepository;
 
 	@Autowired
 	private CadastroClienteService cadastroCliente;

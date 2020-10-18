@@ -4,12 +4,14 @@ set foreign_key_checks=0;
 delete from cliente;
 delete from endereco;
 delete from foto_cliente;
+delete from proposta;
 
 set foreign_key_checks=1;
 
 alter table cliente auto_increment=1;
 alter table endereco auto_increment=1;
 alter table foto_cliente auto_increment=1;
+alter table proposta auto_increment=1;
 
 /* início clientes */
 insert into endereco (end_cep, end_rua, end_numero, end_bairro, end_complemento, end_cidade, end_estado) 

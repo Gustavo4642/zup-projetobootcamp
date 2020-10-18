@@ -4,7 +4,7 @@ public class ClienteNaoEncontradoException extends EntidadeNaoEncontradaExceptio
 
 	private static final long serialVersionUID = 1L;
 	
-	public ClienteNaoEncontradoException(String codigoCliente) {
-		super(String.format("Não existe um cadastro de cliente com CPF: %s" , codigoCliente));
+	public ClienteNaoEncontradoException(String cpfCliente) {
+		super(String.format("Não existe um cadastro de cliente com CPF: %s" , cpfCliente));
 	}
 }
