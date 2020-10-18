@@ -16,4 +16,5 @@ public class ClienteComEnderecoModel {
 	private OffsetDateTime dataNascimento;
 	private String cpf;
 	private EnderecoModel endereco;
+	private String statusCliente;
 }

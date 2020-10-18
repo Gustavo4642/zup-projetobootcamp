@@ -106,8 +106,10 @@ public class FotoClienteController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public FotoClienteModel atualizarFoto(@PathVariable String codigoCliente,
 			@Valid FotoClienteInput fotoClienteInput) throws IOException {
-		
+	
 		Cliente cliente = cadastroCliente.buscarOuFalharCpf(codigoCliente);
+		
+		cadastroCliente.verificaEnderecoExistente(cliente);
 		
 		MultipartFile arquivo = fotoClienteInput.getArquivo();
 		

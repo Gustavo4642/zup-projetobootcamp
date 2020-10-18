@@ -27,5 +27,4 @@ public class ClienteRepositoryImpl implements ClienteRepositoryQueries{
 		manager.remove(foto);
 	}
 	
-	
 }

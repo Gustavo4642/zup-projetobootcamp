@@ -16,5 +16,6 @@ public class ClienteExibicaoModel {
 	private OffsetDateTime dataNascimento;
 	private String cpf;
 	private EnderecoModel endereco;
+	private String status;
 	private String urlImagem;
 }

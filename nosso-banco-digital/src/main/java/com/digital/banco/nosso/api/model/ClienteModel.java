@@ -15,4 +15,5 @@ public class ClienteModel {
 	private String email;
 	private OffsetDateTime dataNascimento;
 	private String cpf;
+	private String statusCliente;
 }

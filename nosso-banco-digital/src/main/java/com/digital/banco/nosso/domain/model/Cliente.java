@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,33 +28,55 @@ public class Cliente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
+
 	@Column(name = "cli_codigo", nullable = false)
 	private String codigo;
-	
+
 	@Column(name = "cli_nome", nullable = false)
 	private String nome;
-	
+
 	@Column(name = "cli_sobrenome", nullable = false)
 	private String sobrenome;
-	
+
 	@Column(name = "cli_email", nullable = false)
 	private String email;
-	
+
 	@Column(name = "cli_data_nascimento", nullable = false)
 	private OffsetDateTime dataNascimento;
-	
+
 	@Column(name = "cli_cpf", nullable = false)
 	private String cpf;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cli_endereco_id")
 	private Endereco endereco;
-	
-	// para gerar um código de cliente aleatório
-	@PrePersist // antes de executar uma persistencia, executa esse método
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "cli_status", nullable = false)
+	private StatusCliente status = StatusCliente.INATIVO;
+
+	@PrePersist 
 	private void gerarCodigo() {
 		setCodigo(UUID.randomUUID().toString());
 	}
+
+	public boolean enderecoExistente() {
+		return getEndereco() != null;
+	}
+
+	public void ativar() {
+		setStatus(StatusCliente.ATIVO);
+	}
+
+	public void inativar() {
+		setStatus(StatusCliente.INATIVO);
+	}
+
+	public void analisar() {
+		setStatus(StatusCliente.ANALISE);
+	}
 	
+	public void recusar() {
+		setStatus(StatusCliente.RECUSA);
+	}
 }

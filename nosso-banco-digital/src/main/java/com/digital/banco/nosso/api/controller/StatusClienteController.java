@@ -1,0 +1,70 @@
+package com.digital.banco.nosso.api.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.digital.banco.nosso.domain.exception.NegocioException;
+import com.digital.banco.nosso.domain.model.Cliente;
+import com.digital.banco.nosso.domain.model.FotoCliente;
+import com.digital.banco.nosso.domain.service.AlteraStatusClienteService;
+import com.digital.banco.nosso.domain.service.CadastroClienteService;
+import com.digital.banco.nosso.domain.service.CadastroFotoClienteService;
+import com.digital.banco.nosso.domain.service.FotoStorageService;
+import com.digital.banco.nosso.domain.service.FotoStorageService.FotoRecuperada;
+
+@RestController
+@RequestMapping(value = "/clientes/{clienteCpf}")
+public class StatusClienteController {
+	
+	@Autowired
+	private CadastroClienteService cadastroCliente;
+	
+	@Autowired
+	private CadastroFotoClienteService cadastroFoto;
+	
+	@Autowired
+	private AlteraStatusClienteService alteraStatusCliente;
+	
+	@Autowired
+	private FotoStorageService fotoStorage; 
+	
+	@PutMapping("/ativar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable String clienteCpf) {
+		alteraStatusCliente.ativarCliente(clienteCpf);
+	}
+	
+	@PutMapping("/analisar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void analisar(@PathVariable String clienteCpf) {
+		
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(clienteCpf);		
+		FotoCliente fotoCliente = cadastroFoto.buscarOuFalhar(cliente.getCodigo());		
+		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());		
+		
+		if(fotoRecuperada.temUrl()) {
+			alteraStatusCliente.aguardandoAnaliseCliente(cliente, fotoRecuperada.getUrl());
+		} else {
+			throw new NegocioException(String.format("Cliente %s, CPF %s, não possui documento para avaliação", cliente.getNome(), cliente.getCpf()));
+		}		
+	}
+	
+	@PutMapping("/inativar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inativar(@PathVariable String clienteCpf) {
+		alteraStatusCliente.inativarCliente(clienteCpf);
+	}
+	@PutMapping("/recusar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void recusar(@PathVariable String clienteCpf) {
+		alteraStatusCliente.recusadoPeloCliente(clienteCpf);
+	}
+	
+}
+
+

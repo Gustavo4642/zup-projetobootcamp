@@ -14,7 +14,7 @@ import com.digital.banco.nosso.domain.model.FotoCliente;
 @Repository
 public interface ClienteRepository extends CustomJpaRepository<Cliente, Long>, JpaSpecificationExecutor<Cliente>, ClienteRepositoryQueries {
 
-	@Query("select c from Cliente c ")
+	@Query("from Cliente c ")
 	List<Cliente> findAll();
 
 	@Query("from Cliente c where c.email = :email")
@@ -24,12 +24,24 @@ public interface ClienteRepository extends CustomJpaRepository<Cliente, Long>, J
 	Cliente procurePorCpf(@Param("cpf") String cpf);
 
 	@Query("from Cliente c "
+			+ "join c.endereco e "
+			+ "where c.cpf = :cpfCliente")
+	Cliente procurePorCpfComEndereco(String cpfCliente);
+	
+	@Query("from Cliente c "
 			+ "where c.cpf = :cpfCliente")
 	Optional<Cliente> findByCpf(String cpfCliente);
+	
+	// FOTOS
 	
 	@Query("select f from FotoCliente f "
 			+ "join f.cli c "
 			+ "where c.codigo = :codigoCliente")
 	Optional<FotoCliente> findFotoById(String codigoCliente);
+	
+	@Query("select f from FotoCliente f "
+			+ "join f.cli c "
+			+ "where c.cpf = :cpfCliente")
+	FotoCliente findFotoByCpf(String cpfCliente);
 	
 }

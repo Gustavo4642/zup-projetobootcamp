@@ -1,3 +1,4 @@
+
 package com.digital.banco.nosso.api.controller;
 
 import java.util.List; 
@@ -46,8 +47,8 @@ public class ClienteController {
 	private ClienteInputDisassembler clienteInputDisassembler;
 	
 	@GetMapping
-	public List<ClienteComEnderecoModel> listar() {
-		return clienteComEnderecoModelAssembler.toCollectionModel(clienteRepository.findAll());
+	public List<ClienteModel> listar() {
+		return clienteModelAssembler.toCollectionModel(clienteRepository.findAll());
 	}
 
 	@GetMapping("/{cpfCliente}")

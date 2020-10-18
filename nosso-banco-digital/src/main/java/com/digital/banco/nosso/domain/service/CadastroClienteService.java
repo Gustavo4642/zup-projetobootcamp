@@ -91,4 +91,11 @@ public class CadastroClienteService {
 		return valido;
 	}
 
+	public void verificaEnderecoExistente(Cliente cliente) {
+		if(!cliente.enderecoExistente()) {
+			throw new NegocioException(
+					String.format("Endereço do cliente %s deve ser informado.", cliente.getNome()));
+		}
+	}
+	
 }

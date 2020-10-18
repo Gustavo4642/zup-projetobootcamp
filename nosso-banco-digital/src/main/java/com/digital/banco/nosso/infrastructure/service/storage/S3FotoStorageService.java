@@ -35,12 +35,12 @@ public class S3FotoStorageService implements FotoStorageService {
 	public void armazenar(NovaFoto novaFoto) {
 		try {
 			String caminhoArquivo = getCaminhoArquivo(novaFoto.getNomeArquivo());
-
+					
 			var objectMetadata = new ObjectMetadata();
 			objectMetadata.setContentType(novaFoto.getContentType());
 
 			var putObjectRequest = new PutObjectRequest(storageProperties.getS3().getBucket(), caminhoArquivo,
-					novaFoto.getInputStream(), objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
+					novaFoto.getInputStream(), objectMetadata ).withCannedAcl(CannedAccessControlList.PublicRead);
 
 			amazonS3.putObject(putObjectRequest);
 		} catch (Exception e) {
