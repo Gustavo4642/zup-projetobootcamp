@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,13 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digital.banco.nosso.api.assembler.PropostaModelAssembler;
 import com.digital.banco.nosso.api.model.PropostaModel;
+import com.digital.banco.nosso.api.openapi.controller.PropostaControllerOpenApi;
 import com.digital.banco.nosso.domain.model.Proposta;
 import com.digital.banco.nosso.domain.repository.PropostaRepository;
 import com.digital.banco.nosso.domain.service.CadastroPropostaService;
 
 @RestController
-@RequestMapping(value = "/propostas")
-public class PropostaController {
+@RequestMapping(value = "/propostas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PropostaController implements PropostaControllerOpenApi {
 
 	@Autowired
 	private PropostaRepository propostaRepository;

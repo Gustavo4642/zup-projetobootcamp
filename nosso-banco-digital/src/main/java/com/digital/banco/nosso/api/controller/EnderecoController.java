@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import com.digital.banco.nosso.api.assembler.EnderecoInputDisassembler;
 import com.digital.banco.nosso.api.assembler.EnderecoModelAssembler;
 import com.digital.banco.nosso.api.model.EnderecoModel;
 import com.digital.banco.nosso.api.model.input.EnderecoInput;
+import com.digital.banco.nosso.api.openapi.controller.EnderecoControllerOpenApi;
 import com.digital.banco.nosso.domain.exception.ClienteNaoEncontradoException;
 import com.digital.banco.nosso.domain.exception.EnderecoNaoEncontradoException;
 import com.digital.banco.nosso.domain.exception.NegocioException;
@@ -28,8 +30,8 @@ import com.digital.banco.nosso.domain.service.CadastroClienteService;
 import com.digital.banco.nosso.domain.service.CadastroEnderecoService;
 
 @RestController
-@RequestMapping(value = "/enderecos")
-public class EnderecoController {
+@RequestMapping(value = "/enderecos", produces = MediaType.APPLICATION_JSON_VALUE)
+public class EnderecoController implements EnderecoControllerOpenApi{
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
