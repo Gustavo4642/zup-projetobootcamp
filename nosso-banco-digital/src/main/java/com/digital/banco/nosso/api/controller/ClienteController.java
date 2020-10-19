@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digital.banco.nosso.api.ResourceUriHelper;
 import com.digital.banco.nosso.api.assembler.ClienteComEnderecoModelAssembler;
 import com.digital.banco.nosso.api.assembler.ClienteInputDisassembler;
 import com.digital.banco.nosso.api.assembler.ClienteModelAssembler;
@@ -67,7 +68,11 @@ public class ClienteController implements ClienteControllerOpenApi{
 			
 			Cliente cliente = clienteInputDisassembler.toDomainObject(clienteInput);
 			
-			return clienteModelAssembler.toModel(cadastroCliente.salvar(cliente));
+			ClienteModel clienteModel = clienteModelAssembler.toModel(cadastroCliente.salvar(cliente));
+			
+			ResourceUriHelper.addUriInResponseHeader(clienteModel.getCpf());
+			
+			return clienteModel;
 		} catch (ClienteNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		} 
