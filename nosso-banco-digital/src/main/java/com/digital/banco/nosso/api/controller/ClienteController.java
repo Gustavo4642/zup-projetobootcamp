@@ -27,6 +27,11 @@ import com.digital.banco.nosso.domain.model.Cliente;
 import com.digital.banco.nosso.domain.repository.ClienteRepository;
 import com.digital.banco.nosso.domain.service.CadastroClienteService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "Clientes")
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteController {
@@ -46,21 +51,26 @@ public class ClienteController {
 	@Autowired
 	private ClienteInputDisassembler clienteInputDisassembler;
 	
+	@ApiOperation("Listagem de Clientes")
 	@GetMapping
 	public List<ClienteModel> listar() {
 		return clienteModelAssembler.toCollectionModel(clienteRepository.findAll());
 	}
 
+	@ApiOperation("Busca Cliente Específico Por CPF")
 	@GetMapping("/{cpfCliente}")
-	public ClienteComEnderecoModel buscar(@PathVariable String cpfCliente) {
+	public ClienteComEnderecoModel buscar(@ApiParam(value="CPF do Cliente", example = "999.999.999-99") 
+		@PathVariable String cpfCliente) {
 		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);
 		
-		return clienteComEnderecoModelAssembler.toModel(cliente);
+		return clienteComEnderecoModelAssembler.toModel(cliente);	
 	}
 
+	@ApiOperation("Cadastra Cliente")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ClienteModel adicionar(@RequestBody @Valid ClienteInput clienteInput) {
+	public ClienteModel adicionar(@ApiParam(name="corpo", value = "Representação de um novo cliente")
+			@RequestBody @Valid ClienteInput clienteInput) {
 		try {
 			
 			Cliente cliente = clienteInputDisassembler.toDomainObject(clienteInput);
