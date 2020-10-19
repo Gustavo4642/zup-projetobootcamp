@@ -5,7 +5,7 @@ public enum StatusCliente {
 	ATIVO("Ativo"),
 	INATIVO("Inativo"),
 	ANALISE("Análise"),
-	RECUSA("Cliente Recusou");
+	RECUSA("Recusa");
 	
 	private String descricao;
 	

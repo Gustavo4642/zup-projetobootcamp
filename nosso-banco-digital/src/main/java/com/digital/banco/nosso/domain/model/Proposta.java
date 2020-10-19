@@ -35,17 +35,16 @@ public class Proposta {
 	@JoinColumn(name = "pro_cliente_id", nullable = false)
 	private Cliente cliente;
 	
-	/*@ManyToOne
-	@JoinColumn(name = "pro_conta_id", nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "pro_conta_id")
 	private Conta conta;
-	*/
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "pro_status", nullable = false)
 	private StatusProposta statusProposta = StatusProposta.AGUARDANDO;
 	
 	@Column(name = "pro_motivo")
-	private String movito;
+	private String motivo;
 	
 	@PrePersist 
 	private void gerarCodigo() {

@@ -1,7 +1,23 @@
 package com.digital.banco.nosso.domain.model;
 
+import java.math.BigDecimal;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
 public class Conta {
-/*
+
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +35,8 @@ public class Conta {
 	
 	@Column(name = "con_saldo", nullable = false)
 	private BigDecimal saldo;	
-	*/
-	//private Proposta proposta;
+	
+	@OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
+	private Proposta proposta;
 	//private Movimentacao movimentacao;
 }

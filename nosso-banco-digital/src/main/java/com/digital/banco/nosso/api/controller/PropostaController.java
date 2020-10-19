@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digital.banco.nosso.api.assembler.PropostaModelAssembler;
 import com.digital.banco.nosso.api.model.PropostaModel;
+import com.digital.banco.nosso.domain.exception.PropostaNaoEncontradaException;
 import com.digital.banco.nosso.domain.model.Proposta;
 import com.digital.banco.nosso.domain.repository.PropostaRepository;
 import com.digital.banco.nosso.domain.service.CadastroPropostaService;
@@ -35,9 +36,13 @@ public class PropostaController {
 
 	@GetMapping("/{cpfCliente}")
 	public PropostaModel buscar(@PathVariable String cpfCliente) {
-		Proposta proposta = cadastroProposta.buscarOuFalharCpfCliente(cpfCliente);
+		Proposta proposta = cadastroProposta.buscarPropostaNaoOptional(cpfCliente);
 		
-		return propostaModelAssembler.toModel(proposta);
+		if(proposta != null) {
+			return propostaModelAssembler.toModel(proposta);	
+		} else {
+			throw new PropostaNaoEncontradaException(cpfCliente);
+		}
 	}
 	
 }

@@ -22,70 +22,91 @@ import com.digital.banco.nosso.domain.service.FotoStorageService.FotoRecuperada;
 @RestController
 @RequestMapping(value = "/clientes/{clienteCpf}")
 public class StatusClienteController {
-	
+
 	@Autowired
 	private CadastroClienteService cadastroCliente;
-	
+
 	@Autowired
 	private CadastroFotoClienteService cadastroFoto;
-	
+
 	@Autowired
 	private CadastroPropostaService cadastroProposta;
-	
+
 	@Autowired
 	private AlteraStatusClienteService alteraStatusCliente;
-	
+
 	@Autowired
-	private FotoStorageService fotoStorage; 
-	
+	private FotoStorageService fotoStorage;
+
+	// feito em propostaController
+	/*@GetMapping("/consultarStatus")
+	public ResponseEntity<ClienteModel> consulta(@PathVariable String clienteCpf) {
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(clienteCpf);
+
+		switch (cliente.getStatus().getDescricao()) {
+		case "Ativo":
+			return ResponseEntity.status(HttpStatus.OK).build();
+		case "Inativo":
+			return ResponseEntity.status(HttpStatus.OK).build();
+		case "Análise":
+			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+		case "Recusa":
+			return ResponseEntity.status(HttpStatus.OK).build();
+		default:
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+		}
+	}*/
+
 	@PutMapping("/ativar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void ativar(@PathVariable String clienteCpf) {
+		
 		alteraStatusCliente.ativarCliente(clienteCpf);
 	}
-	
+
 	@PutMapping("/analisar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void analisar(@PathVariable String clienteCpf) {
-		
-		Cliente cliente = cadastroCliente.buscarOuFalharCpf(clienteCpf);		
-		FotoCliente fotoCliente = cadastroFoto.buscarOuFalhar(cliente.getCodigo());		
-		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());		
-		
-		if(fotoRecuperada.temUrl()) {
+
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(clienteCpf);
+		FotoCliente fotoCliente = cadastroFoto.buscarOuFalhar(cliente.getCodigo());
+		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());
+
+		if (fotoRecuperada.temUrl()) {
 			alteraStatusCliente.aguardandoAnaliseCliente(cliente, fotoRecuperada.getUrl());
 		} else {
-			throw new NegocioException(String.format("Cliente %s, CPF %s, não possui documento para avaliação", cliente.getNome(), cliente.getCpf()));
-		}		
-	
+			throw new NegocioException(String.format("Cliente %s, CPF %s, não possui documento para avaliação",
+					cliente.getNome(), cliente.getCpf()));
+		}
+
 		cadastroProposta.salvar(cliente);
 	}
-	
+
 	@PutMapping("/inativar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inativar(@PathVariable String clienteCpf) {
-		
-		Proposta proposta = cadastroProposta.buscarPropostaParaExclusao(clienteCpf);		
-		
-		if(proposta != null) {
-			cadastroProposta.excluir(proposta.getId());	
+
+		Proposta proposta = cadastroProposta.buscarPropostaNaoOptional(clienteCpf);
+
+		if (proposta != null) {
+			cadastroProposta.alteraStatus(proposta);
 		}
-		
+
 		alteraStatusCliente.inativarCliente(clienteCpf);
 	}
+
 	@PutMapping("/recusar")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void recusar(@PathVariable String clienteCpf) {
-		
-		Proposta proposta = cadastroProposta.buscarPropostaParaExclusao(clienteCpf);		
-		
-		if(proposta != null) {
-			cadastroProposta.excluir(proposta.getId());	
+
+		Proposta proposta = cadastroProposta.buscarPropostaNaoOptional(clienteCpf);
+
+		if (proposta != null) {
+			cadastroProposta.alteraStatus(proposta);
 		}
-	
+
 		alteraStatusCliente.recusadoPeloCliente(clienteCpf);
 	}
-	
+
 }
-
-

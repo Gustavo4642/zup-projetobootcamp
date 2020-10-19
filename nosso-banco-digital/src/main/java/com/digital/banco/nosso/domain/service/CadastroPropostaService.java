@@ -3,11 +3,9 @@ package com.digital.banco.nosso.domain.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.digital.banco.nosso.domain.exception.EntidadeEmUsoException;
 import com.digital.banco.nosso.domain.exception.PropostaNaoEncontradaException;
 import com.digital.banco.nosso.domain.model.Cliente;
 import com.digital.banco.nosso.domain.model.Proposta;
@@ -29,17 +27,14 @@ public class CadastroPropostaService {
 	}
 	
 	@Transactional
-	public void excluir(Long propostaId) {
+	public void alteraStatus(Proposta proposta) {
 		try {
-			propostaRepository.deleteById(propostaId);
-			propostaRepository.flush();
+			proposta.setStatusProposta(StatusProposta.REJEITADA);
+			proposta.setMotivo("Proposta rejeitada");
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new PropostaNaoEncontradaException(propostaId);
-
-		} catch (DataIntegrityViolationException e) {
-			throw new EntidadeEmUsoException(String.format("Proposta %d está em uso.", propostaId));
-		}
+			throw new PropostaNaoEncontradaException(proposta.getCodigo());
+		} 
 	}
 	
 	private Proposta montaProposta(Cliente cliente) {
@@ -48,7 +43,7 @@ public class CadastroPropostaService {
 
 		proposta.setCliente(cliente);
 		proposta.setStatusProposta(StatusProposta.AGUARDANDO);
-		proposta.setMovito("Proposta enviada para análise.");
+		proposta.setMotivo("Proposta enviada para análise.");
 
 		return proposta;
 	}
@@ -58,7 +53,7 @@ public class CadastroPropostaService {
 				.orElseThrow(() -> new PropostaNaoEncontradaException(cpfCliente));
 	}
 	
-	public Proposta buscarPropostaParaExclusao(String cpfCliente) {
-		return propostaRepository.findByCpfExclusao(cpfCliente);
+	public Proposta buscarPropostaNaoOptional(String cpfCliente) {
+		return propostaRepository.findByCpfNaoOptional(cpfCliente);
 	}
 }

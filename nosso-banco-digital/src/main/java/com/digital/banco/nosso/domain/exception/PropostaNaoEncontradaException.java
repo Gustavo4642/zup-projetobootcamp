@@ -9,6 +9,6 @@ public class PropostaNaoEncontradaException extends EntidadeNaoEncontradaExcepti
 	}
 	
 	public PropostaNaoEncontradaException(String cpfCliente) {
-		super(String.format("Não existe uma proposta para o cliente com CPF: %s" , cpfCliente));
+		super(String.format("Não foi encontrado uma proposta para o cliente com CPF: %s" , cpfCliente));
 	}
 }
