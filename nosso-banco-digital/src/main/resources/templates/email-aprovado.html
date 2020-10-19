@@ -5,11 +5,18 @@
 	<br><br>
 	Prezado(a) ${cliente.nome} 
 	<br>
-	Seu cadastro foi aprovado com sucesso. 
+	Seu cadastro foi aprovado e sua conta foi criada com sucesso. 
 	<br><br> 
-	Criaremos sua conta o mais rápido possível. 
-	<br><br> 
-	Entraremos em contato em breve.
+	Código da Proposta: ${conta.proposta.codigo}
+	<br>
+	Banco: ${conta.codigoBanco}
+	<br>
+	Agência: ${conta.agencia}
+	<br>
+	Número da conta: ${conta.numeroConta}
+	<br>
+	Saldo: ${conta.saldo?string.currency}
+	
 	Obrigado por escolher o Nosso Banco Digital - ZUP!
 	</p>
 </body>

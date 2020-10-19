@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.digital.banco.nosso.domain.exception.NegocioException;
 import com.digital.banco.nosso.domain.model.Cliente;
+import com.digital.banco.nosso.domain.model.Conta;
 import com.digital.banco.nosso.domain.model.StatusCliente;
 import com.digital.banco.nosso.domain.repository.ClienteRepository;
 import com.digital.banco.nosso.domain.service.mensagemEmail.ConstroiMensagemEmail;
@@ -61,8 +62,8 @@ public class AlteraStatusClienteService {
 	}
 
 	@Transactional
-	public void ativarCliente(String cpfCliente) {
-		Cliente cliente = buscarOuFalharCpf(cpfCliente);
+	public Cliente ativarCliente(Cliente cliente, Conta conta) {
+		
 
 		if (cliente.getStatus().equals(StatusCliente.ATIVO)) {
 			throw new NegocioException(String.format("Cliente com CPF %s já está ATIVO", cliente.getCpf()));
@@ -71,38 +72,24 @@ public class AlteraStatusClienteService {
 		} else if (cliente.getStatus().equals(StatusCliente.RECUSA)) {
 			throw new NegocioException(String.format("O Cliente deve ser enviado para análise.", cliente.getCpf()));
 		}
-
-		cadastroCliente.verificaEnderecoExistente(cliente);
-		cadastroFoto.verificaFotoExistente(cliente);
 		
 		cliente.ativar();
 		clienteRepository.flush();
 		
-		constroiMensagem.constroiMensagemClienteAtivado(cliente);
+		constroiMensagem.constroiMensagemClienteAtivado(cliente, conta);
+		
+		return cliente;
 	}
 
 	@Transactional
 	public void inativarCliente(String cpfCliente) {
-		Cliente cliente = buscarOuFalharCpf(cpfCliente);
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);
 
 		if (cliente.getStatus().equals(StatusCliente.INATIVO)) {
 			throw new NegocioException(String.format("Cliente com CPF %s já está INATIVO", cliente.getCpf()));
 		}
 
 		cliente.inativar();
-	}
-
-	// validacao para pequisa
-	public Cliente buscarOuFalharCpf(String cpfCliente) {
-
-		Cliente clienteEncontrado = clienteRepository.procurePorCpfComEndereco(cpfCliente);
-
-		if (clienteEncontrado == null) {
-			throw new NegocioException(
-					String.format("Cliente não foi encontrado. Verifique se o cadastro está completo."));
-		}
-
-		return clienteEncontrado;
 	}
 
 }

@@ -11,3 +11,5 @@ engine=InnoDB default charset=utf8;
 
 alter table proposta add constraint fk_proposta_cliente
 	foreign key (pro_cliente_id) references cliente (id);
+	
+alter table proposta add constraint uk_proposta_pro_codigo unique (pro_codigo);

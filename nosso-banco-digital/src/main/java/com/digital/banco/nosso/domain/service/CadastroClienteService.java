@@ -24,17 +24,14 @@ public class CadastroClienteService {
 		if (!validaPontuacaoCpf(cliente)) {
 			throw new NegocioException("Número do registro de contribuinte individual brasileiro (CPF) inválido");
 		}
-		
+
 		return clienteRepository.save(cliente);
 	}
 
-	// validacao para pequisa
 	public Cliente buscarOuFalharCpf(String cpfCliente) {
-		return clienteRepository.findByCpf(cpfCliente)
-				.orElseThrow(() -> new ClienteNaoEncontradoException(cpfCliente));
+		return clienteRepository.findByCpf(cpfCliente).orElseThrow(() -> new ClienteNaoEncontradoException(cpfCliente));
 	}
 
-	// validação para inclusão.
 	public void buscarPorEmail(String emailCliente) {
 
 		Cliente clienteEncontrado = clienteRepository.procurePorEmail(emailCliente);
@@ -44,7 +41,6 @@ public class CadastroClienteService {
 		}
 	}
 
-	// validação para inclusão.
 	public void buscarPorCpf(String cpfCliente) {
 
 		Cliente clienteEncontrado = clienteRepository.procurePorCpf(cpfCliente);
@@ -90,10 +86,9 @@ public class CadastroClienteService {
 	}
 
 	public void verificaEnderecoExistente(Cliente cliente) {
-		if(!cliente.enderecoExistente()) {
-			throw new NegocioException(
-					String.format("Endereço do cliente %s deve ser informado.", cliente.getNome()));
+		if (!cliente.enderecoExistente()) {
+			throw new NegocioException(String.format("Endereço do cliente %s deve ser informado.", cliente.getNome()));
 		}
 	}
-	
+
 }

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 
 import lombok.Data;
@@ -35,8 +36,7 @@ public class Proposta {
 	@JoinColumn(name = "pro_cliente_id", nullable = false)
 	private Cliente cliente;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "pro_conta_id")
+	@OneToOne(mappedBy = "proposta")
 	private Conta conta;
 	
 	@Enumerated(EnumType.STRING)

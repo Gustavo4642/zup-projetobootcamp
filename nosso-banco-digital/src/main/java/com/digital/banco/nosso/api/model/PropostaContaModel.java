@@ -7,11 +7,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PropostaModel {
+public class PropostaContaModel {
 
 	private String codigo;
 	private ClienteModel cliente;
-	private ContaPropostaModel conta;
 	private StatusProposta statusProposta;
 	private String motivo;
 }

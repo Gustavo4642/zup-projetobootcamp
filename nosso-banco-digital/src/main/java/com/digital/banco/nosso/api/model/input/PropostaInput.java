@@ -13,7 +13,7 @@ public class PropostaInput {
 
 	@Valid
 	@NotBlank
-	private ClienteCpfInput clienteCpfModel;
+	private ClienteCpfInput cliente;
 
 	@NotNull
 	private boolean aceite;

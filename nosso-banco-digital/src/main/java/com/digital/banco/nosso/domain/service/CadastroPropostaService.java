@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.digital.banco.nosso.domain.exception.PropostaNaoEncontradaException;
 import com.digital.banco.nosso.domain.model.Cliente;
+import com.digital.banco.nosso.domain.model.Conta;
 import com.digital.banco.nosso.domain.model.Proposta;
 import com.digital.banco.nosso.domain.model.StatusProposta;
 import com.digital.banco.nosso.domain.repository.PropostaRepository;
@@ -48,6 +49,22 @@ public class CadastroPropostaService {
 		return proposta;
 	}
 
+	public void atualizaProposta(Proposta proposta, Conta conta) {
+
+		proposta.setStatusProposta(StatusProposta.ACEITA);
+		proposta.setMotivo(
+				"Conta número '" 
+				+ conta.getNumeroConta() 
+				+"', para o banco '"
+				+ conta.getCodigoBanco()
+				+"', agencia '" 
+				+ conta.getAgencia()
+				+"', criada com sucesso!");
+		proposta.setConta(conta);
+		propostaRepository.save(proposta);
+		
+	}
+	
 	public Proposta buscarOuFalharCpfCliente(String cpfCliente) {
 		return propostaRepository.findByCpfCliente(cpfCliente)
 				.orElseThrow(() -> new PropostaNaoEncontradaException(cpfCliente));
@@ -55,5 +72,9 @@ public class CadastroPropostaService {
 	
 	public Proposta buscarPropostaNaoOptional(String cpfCliente) {
 		return propostaRepository.findByCpfNaoOptional(cpfCliente);
+	}
+	
+	public Proposta buscarPropostaPorCodigo(String codigoProposta) {
+		return propostaRepository.buscarPropostaPorCodigo(codigoProposta);
 	}
 }

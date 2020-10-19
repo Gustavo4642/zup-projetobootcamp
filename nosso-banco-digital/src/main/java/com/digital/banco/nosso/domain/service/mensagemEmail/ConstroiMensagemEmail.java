@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digital.banco.nosso.domain.model.Cliente;
+import com.digital.banco.nosso.domain.model.Conta;
 import com.digital.banco.nosso.domain.service.EnvioEmailService;
 import com.digital.banco.nosso.domain.service.EnvioEmailService.Mensagem;;
 
@@ -23,12 +24,13 @@ public class ConstroiMensagemEmail {
 		envioEmailService.enviar(mensagem);		
 	}
 	
-	public void constroiMensagemClienteAtivado(Cliente cliente) {
+	public void constroiMensagemClienteAtivado(Cliente cliente, Conta conta) {
 		
 		var mensagem = Mensagem.builder()
 				.assunto("Cadastro Aprovado")
 				.corpo("email-aprovado.html")
 				.variavel("cliente", cliente)
+				.variavel("conta", conta)
 				.destinatario(cliente.getEmail()).build();
 
 		envioEmailService.enviar(mensagem);

@@ -26,4 +26,11 @@ public interface PropostaRepository extends CustomJpaRepository<Proposta, Long>,
 			+ "where c.cpf = :cpfCliente "
 			+ "and p.statusProposta != 'REJEITADA'")
 	Proposta findByCpfNaoOptional(String cpfCliente);	
+	
+	@Query("from Proposta p "
+			+ "join p.cliente c "
+			+ "where p.codigo = :codigoProposta ")
+	Proposta buscarPropostaPorCodigo(String codigoProposta);	
+
+	
 }
