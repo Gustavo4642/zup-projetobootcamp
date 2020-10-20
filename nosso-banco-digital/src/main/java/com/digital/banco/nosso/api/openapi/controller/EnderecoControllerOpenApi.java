@@ -1,6 +1,6 @@
 package com.digital.banco.nosso.api.openapi.controller;
 
-import java.util.List; 
+import org.springframework.hateoas.CollectionModel;
 
 import com.digital.banco.nosso.api.exceptionHandler.Problem;
 import com.digital.banco.nosso.api.model.EnderecoModel;
@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface EnderecoControllerOpenApi {
 	
 	@ApiOperation("Listagem de Enderecos")
-	public List<EnderecoModel> listar() ;
+	public CollectionModel<EnderecoModel> listar() ;
 
 	@ApiOperation("Busca Endereço Específico Por ID")
 	@ApiResponses({

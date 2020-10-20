@@ -1,4 +1,4 @@
-package com.digital.banco.nosso.core.openapi;
+package com.digital.banco.nosso.core.springfox;
 
 import java.util.Arrays;
 import java.util.List;

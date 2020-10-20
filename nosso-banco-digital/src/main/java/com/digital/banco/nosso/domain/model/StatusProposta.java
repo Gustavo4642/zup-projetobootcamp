@@ -15,5 +15,4 @@ public enum StatusProposta {
 	public String getDescricao() {
 		return this.descricao;
 	}
-
 }

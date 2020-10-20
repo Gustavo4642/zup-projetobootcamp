@@ -8,4 +8,9 @@ public class ContaNaoEncontradaException extends EntidadeNaoEncontradaException 
 		super(String.format("Conta para o cliente de código: %d não encontrada" , contaId));
 	}
 	
+	public ContaNaoEncontradaException(String codigoConta) {
+		super(String.format("Conta para o cliente de código: %d não encontrada" , codigoConta));
+	}
+	 
+	
 }

@@ -14,4 +14,9 @@ public interface ContaRepository extends CustomJpaRepository<Conta, Long>, JpaSp
 	@Query("from Proposta p ")
 	List<Conta> findAll();
 	
+	@Query("from Conta c "
+			+ "join c.proposta p "
+			+ "where c.codigo = :codigoConta")
+	Conta procureContaProposta(String codigoConta);
+	
 }

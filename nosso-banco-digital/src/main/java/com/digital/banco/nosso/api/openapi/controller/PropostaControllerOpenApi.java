@@ -1,7 +1,6 @@
 package com.digital.banco.nosso.api.openapi.controller;
 
-import java.util.List;
-
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
 import com.digital.banco.nosso.api.exceptionHandler.Problem;
@@ -17,7 +16,7 @@ import io.swagger.annotations.ApiResponses;
 public interface PropostaControllerOpenApi {
 	
 	@ApiOperation("Listagem de Propostas")
-	public List<PropostaModel> listar() ;
+	public CollectionModel<PropostaModel> listar() ;
 
 	@ApiOperation("Busca uma proposta específica pelo código da proposta")
 	@ApiResponses({

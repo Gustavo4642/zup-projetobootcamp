@@ -50,4 +50,16 @@ public class Proposta {
 	private void gerarCodigo() {
 		setCodigo(UUID.randomUUID().toString());
 	}	
+	
+	public boolean podeSerConfirmado() {
+		return getStatusProposta() == StatusProposta.AGUARDANDO;
+	}
+	
+	public boolean podeSerRecusado() {
+		return getStatusProposta() == StatusProposta.AGUARDANDO;
+	}
+	
+	public boolean podeSerInativado() {
+		return getStatusProposta() == StatusProposta.AGUARDANDO;
+	}
 }

@@ -64,7 +64,7 @@ public class StatusClienteController {
 			alteraStatusCliente.ativarCliente(cliente, conta);
 
 			ContaModel contaModel = contaModelAssembler.toModel(conta);
-
+			
 			return ResponseEntity.status(HttpStatus.OK).body(contaModel);
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();

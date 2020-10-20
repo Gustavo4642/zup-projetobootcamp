@@ -1,29 +1,43 @@
 package com.digital.banco.nosso.api.assembler;
 
-import java.util.List; 
-import java.util.stream.Collectors;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import com.digital.banco.nosso.api.controller.ClienteController;
 import com.digital.banco.nosso.api.model.ClienteModel;
 import com.digital.banco.nosso.domain.model.Cliente;
 
 @Component
-public class ClienteModelAssembler {
-	
+public class ClienteModelAssembler extends RepresentationModelAssemblerSupport<Cliente, ClienteModel> {
+
 	@Autowired
 	private ModelMapper modelMapper;
 
+	public ClienteModelAssembler() {
+		super(ClienteController.class, ClienteModel.class);
+	}
+
+	@Override
 	public ClienteModel toModel(Cliente cliente) {
-		return modelMapper.map(cliente, ClienteModel.class);
+	
+		ClienteModel clienteModel = createModelWithId(cliente.getId(), cliente);
+		modelMapper.map(cliente, clienteModel);
+
+		clienteModel.add(linkTo(methodOn(ClienteController.class).listar()).withRel("clientes"));
+		
+		return clienteModel;
 	}
 	
-	public List<ClienteModel> toCollectionModel(List<Cliente> clientes) {
-		return clientes.stream()
-				.map(cliente -> toModel(cliente))
-				.collect(Collectors.toList());
+	@Override
+	public CollectionModel<ClienteModel> toCollectionModel(Iterable<? extends Cliente> entities) {
+		return super.toCollectionModel(entities)
+			.add(linkTo(ClienteController.class).withSelfRel());
 	}
-	
+
 }

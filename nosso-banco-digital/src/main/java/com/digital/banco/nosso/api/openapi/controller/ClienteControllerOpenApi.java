@@ -1,6 +1,6 @@
 package com.digital.banco.nosso.api.openapi.controller;
 
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 import com.digital.banco.nosso.api.exceptionHandler.Problem;
 import com.digital.banco.nosso.api.model.ClienteComEnderecoModel;
@@ -17,7 +17,7 @@ import io.swagger.annotations.ApiResponses;
 public interface ClienteControllerOpenApi {
 	
 	@ApiOperation("Listagem de Clientes")
-	public List<ClienteModel> listar();
+	public CollectionModel<ClienteModel> listar();
 
 	@ApiOperation("Busca Cliente Específico Por CPF")
 	@ApiResponses({

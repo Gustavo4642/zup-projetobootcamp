@@ -1,12 +1,15 @@
 package com.digital.banco.nosso.api.model;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class EnderecoModel {
+public class EnderecoModel extends RepresentationModel<EnderecoModel>{
 
+	private Long id;
 	private String cep;
 	private String rua;
 	private String numero;

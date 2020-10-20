@@ -33,12 +33,9 @@ public class ExibirClienteCompletoController {
 	
 	@GetMapping("/{cpfCliente}")
 	public ClienteExibicaoModel buscar(@PathVariable String cpfCliente) {
-		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);
-		
-		FotoCliente fotoCliente = cadastroFoto.buscarOuFalhar(cliente.getCodigo());
-		
-		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());
-		
+		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);		
+		FotoCliente fotoCliente = cadastroFoto.buscarOuFalhar(cliente.getCodigo());		
+		FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoCliente.getNomeArquivo());		
 		ClienteExibicaoModel clienteExibicao = clienteExibicaoModelAssembler.toModel(cliente);
 		
 		if(fotoRecuperada.temUrl()) {

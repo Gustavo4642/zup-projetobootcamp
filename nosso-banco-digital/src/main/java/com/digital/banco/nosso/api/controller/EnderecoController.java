@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digital.banco.nosso.api.ResourceUriHelper;
 import com.digital.banco.nosso.api.assembler.EnderecoInputDisassembler;
 import com.digital.banco.nosso.api.assembler.EnderecoModelAssembler;
 import com.digital.banco.nosso.api.model.EnderecoModel;
@@ -47,10 +49,12 @@ public class EnderecoController implements EnderecoControllerOpenApi{
 
 	@Autowired
 	private EnderecoInputDisassembler enderecoInputDisassembler;
-
+	
 	@GetMapping
-	public List<EnderecoModel> listar() {
-		return enderecoModelAssembler.toCollectionModel(enderecoRepository.findAll());
+	public CollectionModel<EnderecoModel> listar() {
+		List<Endereco> enderecos = enderecoRepository.findAll();
+		
+		return enderecoModelAssembler.toCollectionModel(enderecos);
 	}
 
 	@GetMapping("/{enderecoId}")
@@ -69,7 +73,11 @@ public class EnderecoController implements EnderecoControllerOpenApi{
 			Endereco endereco = enderecoInputDisassembler.toDomainObject(enderecoInput);
 			endereco.setCliente(cliente);
 
-			return enderecoModelAssembler.toModel(cadastroEndereco.salvar(endereco));
+			EnderecoModel enderecoModel = enderecoModelAssembler.toModel(cadastroEndereco.salvar(endereco));
+			
+			ResourceUriHelper.addUriInResponseHeader(enderecoModel.getId());
+			
+			return enderecoModel;
 		} catch(ClienteNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		} catch (EnderecoNaoEncontradoException e) {

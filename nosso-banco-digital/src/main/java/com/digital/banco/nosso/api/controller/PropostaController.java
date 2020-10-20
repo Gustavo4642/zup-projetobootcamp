@@ -4,6 +4,7 @@ package com.digital.banco.nosso.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,10 @@ public class PropostaController implements PropostaControllerOpenApi {
 	private CadastroPropostaService cadastroProposta;
 
 	@GetMapping
-	public List<PropostaModel> listar() {
-		return propostaModelAssembler.toCollectionModel(propostaRepository.findAll());
+	public CollectionModel<PropostaModel> listar() {
+		List<Proposta> propostas = propostaRepository.findAll();
+		
+		return propostaModelAssembler.toCollectionModel(propostas);
 	}
 
 	@GetMapping("/{codigoProposta}")

@@ -12,4 +12,3 @@ public class FotoClienteModel {
 	private String contentType;
 	private Long tamanho;
 }
-

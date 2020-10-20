@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.digital.banco.nosso.domain.exception.ContaNaoEncontradaException;
 import com.digital.banco.nosso.domain.exception.PropostaNaoEncontradaException;
 import com.digital.banco.nosso.domain.model.Cliente;
 import com.digital.banco.nosso.domain.model.Conta;
@@ -46,6 +47,16 @@ public class CadastroContaService {
 		cadastroProposta.atualizaProposta(proposta, conta);
 		
 		return conta;
+	}
+	
+	public Conta buscaContaProposta(String codigoConta) {
+		Conta contaEncontrada = contaRepository.procureContaProposta(codigoConta);
+
+		if (contaEncontrada != null) {
+			throw new ContaNaoEncontradaException(codigoConta);
+		}
+		
+		return contaEncontrada;
 	}
 	
 	private Conta criar(Proposta proposta) {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ import com.digital.banco.nosso.domain.service.CadastroClienteService;
 
 @RestController
 @RequestMapping(value = "/clientes", produces = MediaType.APPLICATION_JSON_VALUE)
-public class ClienteController implements ClienteControllerOpenApi{
+public class ClienteController implements ClienteControllerOpenApi {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -42,42 +43,42 @@ public class ClienteController implements ClienteControllerOpenApi{
 
 	@Autowired
 	private ClienteModelAssembler clienteModelAssembler;
-	
+
 	@Autowired
 	private ClienteComEnderecoModelAssembler clienteComEnderecoModelAssembler;
-	
+
 	@Autowired
 	private ClienteInputDisassembler clienteInputDisassembler;
-	
+
 	@GetMapping
-	public List<ClienteModel> listar() {
-		return clienteModelAssembler.toCollectionModel(clienteRepository.findAll());
+	public CollectionModel<ClienteModel> listar() {
+		List<Cliente> clientes = clienteRepository.findAll();
+		
+		return clienteModelAssembler.toCollectionModel(clientes);
 	}
 
 	@GetMapping("/{cpfCliente}")
 	public ClienteComEnderecoModel buscar(@PathVariable String cpfCliente) {
 		Cliente cliente = cadastroCliente.buscarOuFalharCpf(cpfCliente);
-		
-		return clienteComEnderecoModelAssembler.toModel(cliente);	
+ 
+		return clienteComEnderecoModelAssembler.toModel(cliente);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ClienteModel adicionar(@RequestBody @Valid ClienteInput clienteInput) {
 		try {
-			
+
 			Cliente cliente = clienteInputDisassembler.toDomainObject(clienteInput);
-			
+
 			ClienteModel clienteModel = clienteModelAssembler.toModel(cadastroCliente.salvar(cliente));
-			
+
 			ResourceUriHelper.addUriInResponseHeader(clienteModel.getCpf());
-			
+
 			return clienteModel;
 		} catch (ClienteNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
-		} 
+		}
 	}
-	
+
 }
-
-
