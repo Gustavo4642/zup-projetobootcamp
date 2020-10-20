@@ -1,6 +1,7 @@
 package com.digital.banco.nosso.api.openapi.controller;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import com.digital.banco.nosso.api.exceptionHandler.Problem;
 import com.digital.banco.nosso.api.model.EnderecoModel;
@@ -25,7 +26,8 @@ public interface EnderecoControllerOpenApi {
 	public EnderecoModel buscar(@ApiParam(value="ID do Endereço", example = "1") Long enderecoId) ;
 
 	@ApiOperation("Cadastra Endereço")
-	public EnderecoModel adicionar(@ApiParam(name="corpo", value = "Representação de um endereço") EnderecoInput enderecoInput) ;
+	public ResponseEntity<EnderecoModel> adicionar(@ApiParam(name="corpo", value = "Representação de um endereço") 
+	EnderecoInput enderecoInput, String clienteCpf) ;
 
 	
 }

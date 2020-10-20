@@ -52,7 +52,7 @@ public class StatusClienteController {
 
 	@Autowired
 	private FotoStorageService fotoStorage;
-
+	
 	@PutMapping("/ativar")
 	public ResponseEntity<ContaModel> ativar(@PathVariable String clienteCpf) {
 
@@ -86,7 +86,6 @@ public class StatusClienteController {
 				throw new NegocioException(String.format("Cliente %s, CPF %s, não possui documento para avaliação",
 						cliente.getNome(), cliente.getCpf()));
 			}
-
 			PropostaModel propostaModel = propostaModelAssembler.toModel(cadastroProposta.salvar(cliente));
 
 			return ResponseEntity.status(HttpStatus.OK).body(propostaModel);

@@ -40,8 +40,4 @@ public class EnderecoInput {
 	@NotBlank
 	private String estado;
 
-	@ApiModelProperty(required = true)
-	@NotBlank
-	private String cpf;
-
 }

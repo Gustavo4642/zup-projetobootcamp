@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.digital.banco.nosso.api.assembler.EnderecoInputDisassembler;
 import com.digital.banco.nosso.api.assembler.EnderecoModelAssembler;
-import com.digital.banco.nosso.api.hateoas.ResourceUriHelper;
 import com.digital.banco.nosso.api.model.EnderecoModel;
 import com.digital.banco.nosso.api.model.input.EnderecoInput;
 import com.digital.banco.nosso.api.openapi.controller.EnderecoControllerOpenApi;
@@ -64,20 +64,22 @@ public class EnderecoController implements EnderecoControllerOpenApi{
 		return enderecoModelAssembler.toModel(endereco);
 	}
 
-	@PostMapping
+	@PostMapping("{clienteCpf}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public EnderecoModel adicionar(@RequestBody @Valid EnderecoInput enderecoInput) {
+	public ResponseEntity<EnderecoModel> adicionar(@RequestBody @Valid EnderecoInput enderecoInput, @PathVariable String clienteCpf) {
 		try {
 
-			Cliente cliente = cadastroCliente.buscarOuFalharCpf(enderecoInput.getCpf());
+			Cliente cliente = cadastroCliente.buscarOuFalharCpf(clienteCpf);
 			Endereco endereco = enderecoInputDisassembler.toDomainObject(enderecoInput);
 			endereco.setCliente(cliente);
 
 			EnderecoModel enderecoModel = enderecoModelAssembler.toModel(cadastroEndereco.salvar(endereco));
 			
-			ResourceUriHelper.addUriInResponseHeader(enderecoModel.getId());
-			
-			return enderecoModel;
+			return ResponseEntity.ok()
+					.header("Location", 
+							"http://localhost:8080/clientes/" 
+					+ endereco.getCliente().getCpf() + "/foto")
+					.body(enderecoModel);
 		} catch(ClienteNaoEncontradoException e) {
 			throw new NegocioException(e.getMessage(), e);
 		} catch (EnderecoNaoEncontradoException e) {

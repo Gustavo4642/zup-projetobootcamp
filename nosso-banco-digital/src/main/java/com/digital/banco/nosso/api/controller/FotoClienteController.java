@@ -104,7 +104,7 @@ public class FotoClienteController {
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
-	public FotoClienteModel atualizarFoto(@PathVariable String codigoCliente,
+	public ResponseEntity<FotoClienteModel> atualizarFoto(@PathVariable String codigoCliente,
 			@Valid FotoClienteInput fotoClienteInput) throws IOException {
 	
 		Cliente cliente = cadastroCliente.buscarOuFalharCpf(codigoCliente);
@@ -122,6 +122,11 @@ public class FotoClienteController {
 		
 		FotoCliente fotoSalva = cadastroFoto.salvar(foto, arquivo.getInputStream());
 		
-		return fotoClienteModelAssembler.toModel(fotoSalva);
+		FotoClienteModel fotoClienteModel = fotoClienteModelAssembler.toModel(fotoSalva); 
+		
+		return ResponseEntity.ok()
+				.header("Location", "http://localhost:8080/clientes/"
+						+ cliente.getCpf() + "/analisar")
+				.body(fotoClienteModel);
 	}
 }

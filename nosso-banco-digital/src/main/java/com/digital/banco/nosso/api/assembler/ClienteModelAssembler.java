@@ -1,7 +1,6 @@
 package com.digital.banco.nosso.api.assembler;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,6 @@ public class ClienteModelAssembler extends RepresentationModelAssemblerSupport<C
 		ClienteModel clienteModel = createModelWithId(cliente.getId(), cliente);
 		modelMapper.map(cliente, clienteModel);
 
-		clienteModel.add(linkTo(methodOn(ClienteController.class).listar()).withRel("clientes"));
-		
 		return clienteModel;
 	}
 	
