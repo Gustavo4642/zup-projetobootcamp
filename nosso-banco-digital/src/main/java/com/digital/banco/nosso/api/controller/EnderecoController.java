@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digital.banco.nosso.api.ResourceUriHelper;
 import com.digital.banco.nosso.api.assembler.EnderecoInputDisassembler;
 import com.digital.banco.nosso.api.assembler.EnderecoModelAssembler;
+import com.digital.banco.nosso.api.hateoas.ResourceUriHelper;
 import com.digital.banco.nosso.api.model.EnderecoModel;
 import com.digital.banco.nosso.api.model.input.EnderecoInput;
 import com.digital.banco.nosso.api.openapi.controller.EnderecoControllerOpenApi;

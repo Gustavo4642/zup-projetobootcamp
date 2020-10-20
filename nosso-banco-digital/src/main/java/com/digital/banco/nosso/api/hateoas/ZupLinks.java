@@ -1,4 +1,4 @@
-package com.digital.banco.nosso.api;
+package com.digital.banco.nosso.api.hateoas;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -34,5 +34,7 @@ public class ZupLinks {
 				.recusar(cpfCliente))
 				.withRel(rel);
 	}
+	
+	
 	
 }

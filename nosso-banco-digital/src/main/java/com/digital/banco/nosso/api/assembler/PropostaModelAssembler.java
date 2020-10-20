@@ -8,9 +8,9 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import com.digital.banco.nosso.api.ZupLinks;
 import com.digital.banco.nosso.api.controller.ClienteController;
 import com.digital.banco.nosso.api.controller.PropostaController;
+import com.digital.banco.nosso.api.hateoas.ZupLinks;
 import com.digital.banco.nosso.api.model.PropostaModel;
 import com.digital.banco.nosso.domain.model.Proposta;
 

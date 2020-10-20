@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digital.banco.nosso.api.ResourceUriHelper;
 import com.digital.banco.nosso.api.assembler.ClienteComEnderecoModelAssembler;
 import com.digital.banco.nosso.api.assembler.ClienteInputDisassembler;
 import com.digital.banco.nosso.api.assembler.ClienteModelAssembler;
+import com.digital.banco.nosso.api.hateoas.ResourceUriHelper;
 import com.digital.banco.nosso.api.model.ClienteComEnderecoModel;
 import com.digital.banco.nosso.api.model.ClienteModel;
 import com.digital.banco.nosso.api.model.input.ClienteInput;

@@ -1,4 +1,4 @@
-package com.digital.banco.nosso.api;
+package com.digital.banco.nosso.api.hateoas;
 
 import java.net.URI;
 
